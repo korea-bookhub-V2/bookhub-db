@@ -5,6 +5,7 @@
 -- ====================================
 -- 1. Database and Schema Setup
 -- ====================================
+drop database if exists `bookhub_db`;
 CREATE DATABASE IF NOT EXISTS `bookhub_db` 
 CHARACTER SET utf8mb4 
 COLLATE utf8mb4_unicode_ci;
@@ -168,11 +169,11 @@ CREATE TABLE IF NOT EXISTS `book_categories` (
     category_type VARCHAR(255) NOT NULL,
     category_order INT DEFAULT 0, -- 카테고리 정렬 우선순위
     is_active BOOLEAN DEFAULT TRUE, -- 비활성 카테고리 제외 필터용 (삭제 대신 / 보존성 유지)
-    discount_policy_id BIGINT DEFAULT NULL,
+    policy_id BIGINT DEFAULT NULL,
     FOREIGN KEY (parent_category_id)
       REFERENCES book_categories (category_id) ON DELETE CASCADE,
-   FOREIGN KEY (discount_policy_id)
-      REFERENCES discount_policies (policy_id),
+   FOREIGN KEY (policy_id)
+      REFERENCES policies (policy_id),
       CONSTRAINT chk_category_type
       CHECK (category_type IN ('DOMESTIC', 'FOREIGN'))
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -211,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `books` (
     FOREIGN KEY (publisher_id)
       REFERENCES publishers(publisher_id),
     FOREIGN KEY (discount_policy_id)
-      REFERENCES discount_policies (policy_id),
+      REFERENCES policies (policy_id),
     CONSTRAINT chk_book_status
       CHECK (book_status IN ('ACTIVE','INACTIVE','HIDDEN'))
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -335,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
     FOREIGN KEY (customer_id)
       REFERENCES customer (customer_id),
 	FOREIGN KEY (applied_policy_id)
-      REFERENCES discount_policies (policy_id),
+      REFERENCES policies (policy_id),
 	FOREIGN KEY (branch_id)
       REFERENCES branches (branch_id)
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -381,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `book_logs` (
    FOREIGN KEY (book_isbn)
       REFERENCES books (book_isbn),
    FOREIGN KEY (policy_id)
-      REFERENCES discount_policies (policy_id),
+      REFERENCES policies (policy_id),
     CONSTRAINT chk_log_type
       CHECK (log_type IN ('CREATE', 'PRICE_CHANGE', 'DISCOUNT_RATE', 'STATUS_CHANGE', 'HIDDEN'))
 )CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
