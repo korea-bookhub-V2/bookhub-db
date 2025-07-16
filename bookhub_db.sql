@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `employee_exit_logs` (
 -- ===============================
 -- 4. Discount and Policy Management (할인 및 정책 관리)
 -- ===============================
-CREATE TABLE IF NOT EXISTS `discount_policies`(
+CREATE TABLE IF NOT EXISTS `policies`(
     policy_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     policy_title VARCHAR(255) NOT NULL,
     policy_description TEXT DEFAULT NULL,
