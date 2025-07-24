@@ -202,7 +202,7 @@ CREATE TABLE IF NOT EXISTS `books` (
     page_count VARCHAR(255) NOT NULL, # 책 페이지
     language VARCHAR(255) NOT NULL, # 책 원본 나라 표시
     description TEXT DEFAULT NULL,
-    discount_policy_id BIGINT DEFAULT NULL,
+    policy_id BIGINT DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id)
@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `books` (
       REFERENCES authors(author_id),
     FOREIGN KEY (publisher_id)
       REFERENCES publishers(publisher_id),
-    FOREIGN KEY (discount_policy_id)
+    FOREIGN KEY (policy_id)
       REFERENCES policies (policy_id),
     CONSTRAINT chk_book_status
       CHECK (book_status IN ('ACTIVE','INACTIVE','HIDDEN'))
